@@ -1,0 +1,60 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.kp.mwi.telkomtanjung.Fragment.InputDataFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp">
+
+        <RelativeLayout
+            android:id="@+id/rel1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/path"
+                    android:layout_width="225dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:text="@string/pathfile"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnImport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@color/merahTelkom"
+                android:drawableLeft="@drawable/ic_import"
+                android:paddingLeft="4dp"
+                android:text="@string/upload"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnSimpan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:background="@color/merahTelkom"
+            android:drawableLeft="@drawable/ic_upload"
+            android:paddingLeft="5dp"
+            android:text="@string/simpan"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</FrameLayout>
