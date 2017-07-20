@@ -9,6 +9,7 @@
 
     <string name="menu_input">Input Data</string>
     <string name="menu_lihat">Lihat Data</string>
+    <string name="logout">Keluar</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -17,4 +18,14 @@
     <string name="upload">Pilih File</string>
     <string name="simpan">Upload</string>
 
+    <string name="daftar">Sudah pernah mendaftar ? klik disini !</string>
+    <string name="masuk">Belum pernah mendaftar ? klik disini !</string>
+
+    <string name="proseslogin">Autentikasi User</string>
+    <string name="prosesdaftar">Mendaftarkan Akun</string>
+    <string name="proses">Mohon Tunggu...</string>
+    <string name="keluar">Keluar</string>
+    <string name="konfirmasi">Apakah anda yakin ingin keluar dari aplikasi ?</string>
+    <string name="agree">Ya</string>
+    <string name="disagree">Batal</string>
 </resources>

@@ -1,11 +1,14 @@
 package com.kp.mwi.telkomtanjung;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +19,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.kp.mwi.telkomtanjung.Fragment.InputDataFragment;
 import com.squareup.picasso.Picasso;
 
@@ -32,11 +40,16 @@ public class MainActivity extends AppCompatActivity
     FragmentTransaction fragmentTransaction;
     Toolbar toolbar;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        mAuth = FirebaseAuth.getInstance();
+        Toast.makeText(this, "Selamat Datang " + mAuth.getCurrentUser().getEmail(),
+                Toast.LENGTH_SHORT).show();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -60,6 +73,8 @@ public class MainActivity extends AppCompatActivity
         menu.findItem(1).setIcon(R.drawable.ic_inputdata);
         menu.add(1, 2, 2, getResources().getString(R.string.menu_lihat));
         menu.findItem(2).setIcon(R.drawable.ic_magnifier);
+        menu.add(1, 3, 3, getResources().getString(R.string.logout));
+        menu.findItem(3).setIcon(R.drawable.ic_logout);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -68,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.mainframe, fragment);
         fragmentTransaction.commit();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -111,6 +127,28 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.mainframe, fragment);
             fragmentTransaction.commit();
+        } else if (id == 3) {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.keluar)
+                    .content(R.string.konfirmasi)
+                    .positiveText(R.string.agree)
+                    .negativeText(R.string.disagree)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            mAuth.signOut();
+                            startActivity(new Intent(getApplicationContext(), HalamanLogin.class));
+                            finish();
+                        }
+                    })
+                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+
         }
 //        if (id == R.id.nav_camera) {
 //            // Handle the camera action
