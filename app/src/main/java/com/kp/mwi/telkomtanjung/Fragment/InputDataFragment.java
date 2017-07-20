@@ -33,6 +33,7 @@ import static android.content.ContentValues.TAG;
  */
 public class InputDataFragment extends Fragment {
     String path;
+    boolean ada;
 
     @BindView(R.id.path)
     TextView lokasi;
@@ -49,12 +50,21 @@ public class InputDataFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_input_data, container, false);
         ButterKnife.bind(this, v);
         path = null;
+        ada = false;
         return v;
     }
 
     @OnClick(R.id.btnImport)
     public void impor() {
         showFileChooser();
+    }
+
+    @OnClick(R.id.path)
+    public void selengkap() {
+        if (ada) {
+            Toast.makeText(InputDataFragment.this.getContext(), lokasi.getText(),
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showFileChooser() {
@@ -72,7 +82,10 @@ public class InputDataFragment extends Fragment {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     ArrayList<String> paths = new ArrayList<>();
                     paths.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS));
-                    lokasi.setText(paths.get(0));
+                    if (paths.size() > 0) {
+                        lokasi.setText(paths.get(0));
+                        ada = true;
+                    }
                 }
                 break;
         }
