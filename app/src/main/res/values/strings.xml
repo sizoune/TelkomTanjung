@@ -23,6 +23,7 @@
 
     <string name="proseslogin">Autentikasi User</string>
     <string name="prosesdaftar">Mendaftarkan Akun</string>
+    <string name="prosessimpan">Menyimpan Data ke server</string>
     <string name="proses">Mohon Tunggu...</string>
     <string name="keluar">Keluar</string>
     <string name="konfirmasi">Apakah anda yakin ingin keluar dari aplikasi ?</string>
