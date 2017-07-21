@@ -1,5 +1,6 @@
 package com.kp.mwi.telkomtanjung;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,6 +16,7 @@ import com.kp.mwi.telkomtanjung.Model.ODP;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.txtNamaODPDetail)
@@ -56,6 +58,8 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.txtKapOdcDetail)
     TextView kapODC;
 
+    String nama, koord;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,9 @@ public class DetailActivity extends AppCompatActivity {
         bundle = getIntent().getExtras();
         if (bundle != null) {
             ODP odp = bundle.getParcelable("data");
+            nama = odp.getNama();
+            koord = odp.getKoordinat();
+
             namaODP.setText("Nama : " + odp.getNama());
             portOLT.setText("Port OLT : " + odp.getPortolt());
             panelODP.setText("Panel : " + odp.getPanel());
@@ -91,6 +98,14 @@ public class DetailActivity extends AppCompatActivity {
             splODC.setText("SPL : " + odp.getOdc().getSpl());
             kapODC.setText("KAP : " + odp.getOdc().getKap());
         }
+    }
+
+    @OnClick(R.id.btnMap)
+    public void openMap() {
+        Intent intent = new Intent(getApplicationContext(), OnMapOpen.class);
+        intent.putExtra("nama", nama);
+        intent.putExtra("koord", koord);
+        startActivity(intent);
     }
 
 

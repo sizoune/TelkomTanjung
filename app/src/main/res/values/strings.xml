@@ -31,6 +31,8 @@
     <string name="agree">Ya</string>
     <string name="disagree">Batal</string>
     <string name="title_activity_detail">Detail</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_on_map_open">OnMapOpen</string>
 
 
 </resources>
