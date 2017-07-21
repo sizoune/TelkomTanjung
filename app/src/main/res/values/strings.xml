@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TelkomTanjung</string>
+    <string name="app_name">ODP Finder</string>
     <string name="title_activity_main"></string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

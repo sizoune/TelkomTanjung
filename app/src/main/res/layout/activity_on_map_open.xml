@@ -22,5 +22,4 @@
 
     <include layout="@layout/content_on_map_open" />
 
-
 </android.support.design.widget.CoordinatorLayout>

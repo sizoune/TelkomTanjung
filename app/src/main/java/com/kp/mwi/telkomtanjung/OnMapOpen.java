@@ -1,8 +1,12 @@
 package com.kp.mwi.telkomtanjung;
 
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -16,13 +20,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import butterknife.OnClick;
 
 public class OnMapOpen extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     String namaODP;
     double latitude, langitude;
+    LatLng tujuan, asal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +41,14 @@ public class OnMapOpen extends AppCompatActivity implements OnMapReadyCallback {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
         Bundle b = getIntent().getExtras();
         if (b != null) {
             namaODP = b.getString("nama");
             getSupportActionBar().setTitle(b.getString("nama"));
             latitude = Double.parseDouble(b.getString("koord").substring(2, 10));
             langitude = Double.parseDouble(b.getString("koord").substring(13, 23));
+            tujuan = new LatLng(-latitude, langitude);
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -59,15 +69,13 @@ public class OnMapOpen extends AppCompatActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-
         LatLng posisi = new LatLng(-latitude, langitude);
         mMap.addMarker(new MarkerOptions().position(posisi).title(namaODP));
         CameraUpdate center = CameraUpdateFactory.newLatLng(posisi);
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(18);
-
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
-
+//        mMap.setMyLocationEnabled(true);
     }
+
 }

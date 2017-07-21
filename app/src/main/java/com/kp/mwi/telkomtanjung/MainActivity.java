@@ -25,6 +25,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kp.mwi.telkomtanjung.Fragment.AboutFragment;
 import com.kp.mwi.telkomtanjung.Fragment.InputDataFragment;
 import com.kp.mwi.telkomtanjung.Fragment.LihatDataFragment;
 import com.squareup.picasso.Picasso;
@@ -81,8 +82,10 @@ public class MainActivity extends AppCompatActivity
         }
         menu.add(1, 2, 2, getResources().getString(R.string.menu_lihat));
         menu.findItem(2).setIcon(R.drawable.ic_magnifier);
-        menu.add(1, 3, 3, getResources().getString(R.string.logout));
-        menu.findItem(3).setIcon(R.drawable.ic_logout);
+        menu.add(1, 3, 3, "Tentang");
+        menu.findItem(3).setIcon(R.drawable.ic_thinking);
+        menu.add(1, 4, 4, getResources().getString(R.string.logout));
+        menu.findItem(4).setIcon(R.drawable.ic_logout);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -141,6 +144,12 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.mainframe, fragment);
             fragmentTransaction.commit();
         } else if (id == 3) {
+            fragment = new AboutFragment();
+            toolbar.setTitle("Tentang");
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.mainframe, fragment);
+            fragmentTransaction.commit();
+        } else if (id == 4) {
             new MaterialDialog.Builder(this)
                     .title(R.string.keluar)
                     .content(R.string.konfirmasi)

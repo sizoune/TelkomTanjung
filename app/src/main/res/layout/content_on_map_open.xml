@@ -8,19 +8,25 @@
     tools:context="com.kp.mwi.telkomtanjung.OnMapOpen"
     tools:showIn="@layout/activity_on_map_open">
 
-    <LinearLayout
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent" />
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:text="Klik penanda untuk mengetahui rute !"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+    </android.support.v7.widget.CardView>
 </RelativeLayout>
