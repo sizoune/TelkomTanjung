@@ -103,6 +103,9 @@ public class InputDataFragment extends Fragment {
                 }
                 Toast.makeText(InputDataFragment.this.getContext(),
                         "Data berhasil di upload ke server !", Toast.LENGTH_SHORT).show();
+                path = null;
+                ada = false;
+                lokasi.setText(R.string.pathfile);
             }
             dismissDialog();
         } else {

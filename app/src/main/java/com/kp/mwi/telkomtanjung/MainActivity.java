@@ -26,6 +26,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.kp.mwi.telkomtanjung.Fragment.InputDataFragment;
+import com.kp.mwi.telkomtanjung.Fragment.LihatDataFragment;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        Log.i("uidadmin", mAuth.getCurrentUser().getUid());
         Toast.makeText(this, "Selamat Datang " + mAuth.getCurrentUser().getEmail(),
                 Toast.LENGTH_SHORT).show();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -124,6 +126,12 @@ public class MainActivity extends AppCompatActivity
         if (id == 1) {
             fragment = new InputDataFragment();
             toolbar.setTitle(getResources().getString(R.string.menu_input));
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.mainframe, fragment);
+            fragmentTransaction.commit();
+        } else if (id == 2) {
+            fragment = new LihatDataFragment();
+            toolbar.setTitle(getResources().getString(R.string.menu_lihat));
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.mainframe, fragment);
             fragmentTransaction.commit();

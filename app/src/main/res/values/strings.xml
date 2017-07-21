@@ -17,6 +17,7 @@
     <string name="pathfile">Silahkan pilih file terlebih dahulu</string>
     <string name="upload">Pilih File</string>
     <string name="simpan">Upload</string>
+    <string name="caridata">Cari Data</string>
 
     <string name="daftar">Sudah pernah mendaftar ? klik disini !</string>
     <string name="masuk">Belum pernah mendaftar ? klik disini !</string>
@@ -29,4 +30,6 @@
     <string name="konfirmasi">Apakah anda yakin ingin keluar dari aplikasi ?</string>
     <string name="agree">Ya</string>
     <string name="disagree">Batal</string>
+
+
 </resources>
