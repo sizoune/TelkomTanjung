@@ -1,6 +1,7 @@
 package com.kp.mwi.telkomtanjung.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kp.mwi.telkomtanjung.DetailActivity;
 import com.kp.mwi.telkomtanjung.Model.ODP;
 import com.kp.mwi.telkomtanjung.R;
 
@@ -34,13 +36,15 @@ public class LihatDataAdapter extends RecyclerView.Adapter<LihatDataAdapter.Liha
 
     @Override
     public void onBindViewHolder(LihatDataViewHolder holder, int position) {
-        ODP odp = filterListODP.get(position);
+        final ODP odp = filterListODP.get(position);
         holder.namaODP.setText(odp.getNama());
         holder.portOLT.setText(odp.getPortolt());
         holder.itemCLick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "clicked !", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, DetailActivity.class);
+                intent.putExtra("data", odp);
+                context.startActivity(intent);
             }
         });
     }

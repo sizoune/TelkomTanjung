@@ -1,10 +1,13 @@
 package com.kp.mwi.telkomtanjung.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mwi on 7/20/17.
  */
 
-public class OTB {
+public class OTB implements Parcelable{
     private String odf, panel, port, core, kap;
 
     public OTB(String odf, String panel, String port, String core, String kap) {
@@ -17,6 +20,26 @@ public class OTB {
 
     public OTB() {
     }
+
+    protected OTB(Parcel in) {
+        odf = in.readString();
+        panel = in.readString();
+        port = in.readString();
+        core = in.readString();
+        kap = in.readString();
+    }
+
+    public static final Creator<OTB> CREATOR = new Creator<OTB>() {
+        @Override
+        public OTB createFromParcel(Parcel in) {
+            return new OTB(in);
+        }
+
+        @Override
+        public OTB[] newArray(int size) {
+            return new OTB[size];
+        }
+    };
 
     public String getOdf() {
         return odf;
@@ -56,5 +79,19 @@ public class OTB {
 
     public void setKap(String kap) {
         this.kap = kap;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(odf);
+        dest.writeString(panel);
+        dest.writeString(port);
+        dest.writeString(core);
+        dest.writeString(kap);
     }
 }

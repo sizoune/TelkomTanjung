@@ -1,10 +1,13 @@
 package com.kp.mwi.telkomtanjung.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by mwi on 7/20/17.
  */
 
-public class ODP {
+public class ODP implements Parcelable{
     private String nama, panel, port, core, spl, koordinat, lastupdate, alamat, kap, tipe, portolt;
     private ODC odc;
     private OTB otb;
@@ -31,6 +34,34 @@ public class ODP {
         odc = new ODC();
         otb = new OTB();
     }
+
+    protected ODP(Parcel in) {
+        nama = in.readString();
+        panel = in.readString();
+        port = in.readString();
+        core = in.readString();
+        spl = in.readString();
+        koordinat = in.readString();
+        lastupdate = in.readString();
+        alamat = in.readString();
+        kap = in.readString();
+        tipe = in.readString();
+        portolt = in.readString();
+        odc = in.readParcelable(ODC.class.getClassLoader());
+        otb = in.readParcelable(OTB.class.getClassLoader());
+    }
+
+    public static final Creator<ODP> CREATOR = new Creator<ODP>() {
+        @Override
+        public ODP createFromParcel(Parcel in) {
+            return new ODP(in);
+        }
+
+        @Override
+        public ODP[] newArray(int size) {
+            return new ODP[size];
+        }
+    };
 
     public String getNama() {
         return nama;
@@ -134,5 +165,27 @@ public class ODP {
 
     public void setOtb(OTB otb) {
         this.otb = otb;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(nama);
+        dest.writeString(panel);
+        dest.writeString(port);
+        dest.writeString(core);
+        dest.writeString(spl);
+        dest.writeString(koordinat);
+        dest.writeString(lastupdate);
+        dest.writeString(alamat);
+        dest.writeString(kap);
+        dest.writeString(tipe);
+        dest.writeString(portolt);
+        dest.writeParcelable(odc, flags);
+        dest.writeParcelable(otb, flags);
     }
 }

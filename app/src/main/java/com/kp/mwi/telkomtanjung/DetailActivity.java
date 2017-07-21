@@ -5,8 +5,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.kp.mwi.telkomtanjung.Model.ODP;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,7 +22,7 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.txtPortOLTDetail)
     TextView portOLT;
     @BindView(R.id.txtPanelDetail)
-    TextView PanelODP;
+    TextView panelODP;
     @BindView(R.id.txtPortDetail)
     TextView portODP;
     @BindView(R.id.txtCoreDetail)
@@ -58,7 +63,45 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        Bundle bundle;
+        bundle = getIntent().getExtras();
+        if (bundle != null) {
+            ODP odp = bundle.getParcelable("data");
+            namaODP.setText("Nama : " + odp.getNama());
+            portOLT.setText("Port OLT : " + odp.getPortolt());
+            panelODP.setText("Panel : " + odp.getPanel());
+            portODP.setText("Port : " + odp.getPort());
+            coreODP.setText("Core : " + odp.getCore());
+            splODP.setText("SPL : " + odp.getSpl());
+            koorODP.setText("Koordinat : " + odp.getKoordinat());
+            kapODP.setText("KAP : " + odp.getKap());
+            tipeODP.setText("Tipe ODP : " + odp.getTipe());
+
+            odfOTB.setText("ODF : " + odp.getOtb().getOdf());
+            panelOTB.setText("Panel : " + odp.getOtb().getPanel());
+            portOTB.setText("Port : " + odp.getOtb().getPort());
+            coreOTB.setText("Core : " + odp.getOtb().getCore());
+            kapOTB.setText("KAP : " + odp.getOtb().getKap());
+
+            panelODC.setText("Panel : " + odp.getOdc().getPanel());
+            portODC.setText("Port : " + odp.getOdc().getPort());
+            splODC.setText("SPL : " + odp.getOdc().getSpl());
+            kapODC.setText("KAP : " + odp.getOdc().getKap());
+        }
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+                this.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
+                break;
+        }
+        return true;
     }
 
 }
