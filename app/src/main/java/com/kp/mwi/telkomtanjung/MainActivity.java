@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
-        toolbar.setTitle(getResources().getString(R.string.menu_input));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -71,8 +70,15 @@ public class MainActivity extends AppCompatActivity
         Picasso.with(getApplicationContext()).load(R.drawable.telkomlogo).fit().into(logo);
 
         Menu menu = navigationView.getMenu();
-        menu.add(1, 1, 1, getResources().getString(R.string.menu_input));
-        menu.findItem(1).setIcon(R.drawable.ic_inputdata);
+        if (mAuth.getCurrentUser().getUid().equals("u1dLITGaKNeU4AgTQjxe0rRQloq2")) { //admin
+            menu.add(1, 1, 1, getResources().getString(R.string.menu_input));
+            menu.findItem(1).setIcon(R.drawable.ic_inputdata);
+            toolbar.setTitle(getResources().getString(R.string.menu_input));
+            fragment = new InputDataFragment();
+        } else {
+            toolbar.setTitle(getResources().getString(R.string.menu_lihat));
+            fragment = new LihatDataFragment();
+        }
         menu.add(1, 2, 2, getResources().getString(R.string.menu_lihat));
         menu.findItem(2).setIcon(R.drawable.ic_magnifier);
         menu.add(1, 3, 3, getResources().getString(R.string.logout));
@@ -80,7 +86,6 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        fragment = new InputDataFragment();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.mainframe, fragment);
         fragmentTransaction.commit();
