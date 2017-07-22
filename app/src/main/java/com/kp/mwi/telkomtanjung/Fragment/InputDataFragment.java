@@ -1,9 +1,11 @@
 package com.kp.mwi.telkomtanjung.Fragment;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,6 +17,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.database.FirebaseDatabase;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.kp.mwi.telkomtanjung.Model.ODP;
 import com.kp.mwi.telkomtanjung.R;
 
@@ -60,6 +68,8 @@ public class InputDataFragment extends Fragment {
 
     @BindView(R.id.path)
     TextView lokasi;
+
+    boolean ijin = false;
 
     public InputDataFragment() {
         // Required empty public constructor
@@ -115,9 +125,38 @@ public class InputDataFragment extends Fragment {
     }
 
     private void showFileChooser() {
-        FilePickerBuilder.getInstance().setMaxCount(1)
-                .setActivityTheme(R.style.AppTheme)
-                .pickFile(this);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Dexter.withActivity(this.getActivity())
+                    .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .withListener(new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted(PermissionGrantedResponse response) {
+                            ijin = true;
+                            bacaMem();
+                        }
+
+                        @Override
+                        public void onPermissionDenied(PermissionDeniedResponse response) {
+                            Toast.makeText(getContext(), "Ijin untuk membaca memori tidak diberikan !", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {/* ... */}
+                    }).check();
+        } else {
+            FilePickerBuilder.getInstance().setMaxCount(1)
+                    .setActivityTheme(R.style.AppTheme)
+                    .pickFile(this);
+        }
+
+    }
+
+    private void bacaMem() {
+        if (ijin) {
+            FilePickerBuilder.getInstance().setMaxCount(1)
+                    .setActivityTheme(R.style.AppTheme)
+                    .pickFile(this);
+        }
     }
 
     @Override

@@ -29,7 +29,9 @@
         <activity android:name=".HalamanLogin" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity android:name=".HalamanPendaftaran" />
         <activity
             android:name=".DetailActivity"

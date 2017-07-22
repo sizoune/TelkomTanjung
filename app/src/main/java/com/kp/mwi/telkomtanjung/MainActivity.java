@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        Log.i("uidadmin", mAuth.getCurrentUser().getUid());
-        Toast.makeText(this, "Selamat Datang " + mAuth.getCurrentUser().getEmail(),
-                Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(this, "Selamat Datang " + mAuth.getCurrentUser().getEmail(),
+//                Toast.LENGTH_SHORT).show();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
