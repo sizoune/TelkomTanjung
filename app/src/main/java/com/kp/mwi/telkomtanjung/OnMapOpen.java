@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -22,8 +23,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinsBeard;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
 
-import butterknife.OnClick;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class OnMapOpen extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -31,6 +38,11 @@ public class OnMapOpen extends AppCompatActivity implements OnMapReadyCallback {
     String namaODP;
     double latitude, langitude;
     LatLng tujuan, asal;
+    Merlin merlin, merlin1;
+    MerlinsBeard merlinsBeard;
+
+    @BindView(R.id.status)
+    TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +52,7 @@ public class OnMapOpen extends AppCompatActivity implements OnMapReadyCallback {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        ButterKnife.bind(this);
 
         Bundle b = getIntent().getExtras();
         if (b != null) {
@@ -51,6 +63,22 @@ public class OnMapOpen extends AppCompatActivity implements OnMapReadyCallback {
             tujuan = new LatLng(-latitude, langitude);
         }
 
+        merlin = new Merlin.Builder().withConnectableCallbacks().build(this);
+        merlinsBeard = MerlinsBeard.from(this);
+        merlin.registerConnectable(new Connectable() {
+            @Override
+            public void onConnect() {
+            }
+        });
+        if (!merlinsBeard.isConnected()) {
+            status.setText("Anda tidak terhubung dengan internet !");
+        } else {
+            klokonek();
+        }
+    }
+
+    private void klokonek() {
+        status.setText("Klik penanda untuk mengetahui rute !");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

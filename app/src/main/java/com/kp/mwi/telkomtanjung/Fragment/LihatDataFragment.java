@@ -13,10 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +27,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.kp.mwi.telkomtanjung.Adapter.LihatDataAdapter;
 import com.kp.mwi.telkomtanjung.Model.ODP;
 import com.kp.mwi.telkomtanjung.R;
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinsBeard;
+import com.novoda.merlin.registerable.connection.Connectable;
+import com.novoda.merlin.registerable.disconnection.Disconnectable;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,11 +44,17 @@ public class LihatDataFragment extends Fragment {
     private LihatDataAdapter ODPAdapter;
     private EditText cariOdp;
     private Spinner kategori;
+    MaterialDialog dialog;
     String keyword = "";
     String[] kat;
+    Merlin merlin;
+    MerlinsBeard merlinsBeard;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+
+    @BindView(R.id.btnRefresh)
+    ImageButton muatulang;
 
     public LihatDataFragment() {
         // Required empty public constructor
@@ -50,6 +66,7 @@ public class LihatDataFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_lihat_data, container, false);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -63,7 +80,7 @@ public class LihatDataFragment extends Fragment {
         listODP.setLayoutManager(llm);
         ODPAdapter = new LihatDataAdapter(getContext());
         listODP.setAdapter(ODPAdapter);
-
+        muatulang.setVisibility(View.GONE);
         cariOdp = (EditText) view.findViewById(R.id.edCari);
 
         kategori = (Spinner) view.findViewById(R.id.katCari);
@@ -96,8 +113,34 @@ public class LihatDataFragment extends Fragment {
         }
         kategori.setAdapter(adapter);
         kategori.setSelection(adapter.getCount());
-        getData();
+        merlin = new Merlin.Builder().withConnectableCallbacks().build(getContext());
+        merlinsBeard = MerlinsBeard.from(getContext());
+        showDialog();
+        merlin.registerConnectable(new Connectable() {
+            @Override
+            public void onConnect() {
+            }
+        });
+        if (!merlinsBeard.isConnected()) {
+            muatulang.setVisibility(View.VISIBLE);
+            dismissDialog();
+            Toast.makeText(getContext(), "Anda tidak terhubung dengan internet !", Toast.LENGTH_SHORT).show();
+        } else {
+            getData();
+        }
         cariOdp.addTextChangedListener(searchListener);
+    }
+
+    @OnClick(R.id.btnRefresh)
+    public void refresh() {
+        if (merlinsBeard.isConnected()) {
+            showDialog();
+            getData();
+        } else {
+            muatulang.setVisibility(View.VISIBLE);
+            dismissDialog();
+            Toast.makeText(getContext(), "Anda tidak terhubung dengan internet !", Toast.LENGTH_SHORT).show();
+        }
     }
 
     TextWatcher searchListener = new TextWatcher() {
@@ -133,7 +176,11 @@ public class LihatDataFragment extends Fragment {
                         ODP odp = dataSnapshot1.getValue(ODP.class);
                         ODPAdapter.addData(odp);
                     }
+                } else {
+                    Toast.makeText(getContext(), "saat ini, tidak ada data di server !", Toast.LENGTH_SHORT).show();
                 }
+                dismissDialog();
+                muatulang.setVisibility(View.GONE);
             }
 
             @Override
@@ -141,5 +188,19 @@ public class LihatDataFragment extends Fragment {
 
             }
         });
+    }
+
+    private void showDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext())
+                .title("Mengambil Data dari server")
+                .progress(true, 0)
+                .content("Mohon tunggu !");
+
+        dialog = builder.build();
+        dialog.show();
+    }
+
+    private void dismissDialog() {
+        dialog.dismiss();
     }
 }
