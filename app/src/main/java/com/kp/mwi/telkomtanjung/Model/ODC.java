@@ -7,8 +7,8 @@ import android.os.Parcelable;
  * Created by mwi on 7/20/17.
  */
 
-public class ODC implements Parcelable{
-    private String nama, panel, port, spl, kap;
+public class ODC implements Parcelable {
+    private String nama, panel, port, spl, kap, koordinat;
 
     public ODC(String nama, String panel, String port, String spl, String kap) {
         this.nama = nama;
@@ -16,6 +16,15 @@ public class ODC implements Parcelable{
         this.port = port;
         this.spl = spl;
         this.kap = kap;
+    }
+
+    public ODC(String nama, String panel, String port, String spl, String kap, String koordinat) {
+        this.nama = nama;
+        this.panel = panel;
+        this.port = port;
+        this.spl = spl;
+        this.kap = kap;
+        this.koordinat = koordinat;
     }
 
     public ODC() {
@@ -27,6 +36,7 @@ public class ODC implements Parcelable{
         port = in.readString();
         spl = in.readString();
         kap = in.readString();
+        koordinat = in.readString();
     }
 
     public static final Creator<ODC> CREATOR = new Creator<ODC>() {
@@ -40,6 +50,14 @@ public class ODC implements Parcelable{
             return new ODC[size];
         }
     };
+
+    public String getKoordinat() {
+        return koordinat;
+    }
+
+    public void setKoordinat(String koordinat) {
+        this.koordinat = koordinat;
+    }
 
     public String getNama() {
         return nama;
@@ -93,5 +111,6 @@ public class ODC implements Parcelable{
         dest.writeString(port);
         dest.writeString(spl);
         dest.writeString(kap);
+        dest.writeString(koordinat);
     }
 }

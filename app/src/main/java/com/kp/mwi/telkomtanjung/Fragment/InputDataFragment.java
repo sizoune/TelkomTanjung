@@ -197,32 +197,43 @@ public class InputDataFragment extends Fragment {
                 int rowsCount = sheet.getPhysicalNumberOfRows();
                 FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
-                for (int r = 2; r < rowsCount; r++) {
+                for (int r = 3; r < rowsCount; r++) {
                     Row row = sheet.getRow(r);
                     ODP odp = new ODP();
                     odp.setNama(getCellAsString(row, 0, formulaEvaluator));
-                    odp.setPortolt(getCellAsString(row, 1, formulaEvaluator));
-                    odp.setPanel(getCellAsString(row, 13, formulaEvaluator));
-                    odp.setPort(getCellAsString(row, 14, formulaEvaluator));
-                    odp.setCore(getCellAsString(row, 15, formulaEvaluator));
-                    odp.setSpl(getCellAsString(row, 16, formulaEvaluator));
-                    odp.setKoordinat(getCellAsString(row, 17, formulaEvaluator));
-                    odp.setLastupdate(getCellAsString(row, 18, formulaEvaluator));
-                    odp.setAlamat(getCellAsString(row, 19, formulaEvaluator));
-                    odp.setKap(getCellAsString(row, 20, formulaEvaluator));
-                    odp.setTipe(getCellAsString(row, 21, formulaEvaluator));
+                    odp.setIpolt(getCellAsString(row, 1, formulaEvaluator));
+                    odp.setPortolt(getCellAsString(row, 2, formulaEvaluator));
+                    odp.setPanel(getCellAsString(row, 20, formulaEvaluator));
+                    odp.setPort(getCellAsString(row, 21, formulaEvaluator));
+                    odp.setCore(getCellAsString(row, 22, formulaEvaluator));
+                    odp.setSpl(getCellAsString(row, 23, formulaEvaluator));
+                    odp.setKoordinat(getCellAsString(row, 24, formulaEvaluator));
+                    odp.setLastupdate(getCellAsString(row, 25, formulaEvaluator));
+                    odp.setAlamat(getCellAsString(row, 26, formulaEvaluator));
+                    odp.setKap(getCellAsString(row, 27, formulaEvaluator));
+                    odp.setTipe(getCellAsString(row, 28, formulaEvaluator));
 
-                    odp.getOtb().setOdf(getCellAsString(row, 2, formulaEvaluator));
-                    odp.getOtb().setPanel(getCellAsString(row, 3, formulaEvaluator));
-                    odp.getOtb().setPort(getCellAsString(row, 4, formulaEvaluator));
-                    odp.getOtb().setCore(getCellAsString(row, 5, formulaEvaluator));
-                    odp.getOtb().setKap(getCellAsString(row, 6, formulaEvaluator));
+                    odp.getFtm().getEside().setPanel(getCellAsString(row, 3, formulaEvaluator));
+                    odp.getFtm().getEside().setPort(getCellAsString(row, 4, formulaEvaluator));
 
-                    odp.getOdc().setNama(getCellAsString(row, 7, formulaEvaluator));
-                    odp.getOdc().setPanel(getCellAsString(row, 8, formulaEvaluator));
-                    odp.getOdc().setPort(getCellAsString(row, 9, formulaEvaluator));
-                    odp.getOdc().setSpl(getCellAsString(row, 10, formulaEvaluator));
-                    odp.getOdc().setKap(getCellAsString(row, 11, formulaEvaluator));
+                    odp.getFtm().getOside().setPanel(getCellAsString(row, 5, formulaEvaluator));
+                    odp.getFtm().getOside().setPort(getCellAsString(row, 6, formulaEvaluator));
+
+                    odp.getFtm().getEtrans().setPanel(getCellAsString(row, 7, formulaEvaluator));
+                    odp.getFtm().getEtrans().setPort(getCellAsString(row, 8, formulaEvaluator));
+
+                    odp.getOtb().setOdf(getCellAsString(row, 9, formulaEvaluator));
+                    odp.getOtb().setPanel(getCellAsString(row, 10, formulaEvaluator));
+                    odp.getOtb().setPort(getCellAsString(row, 11, formulaEvaluator));
+                    odp.getOtb().setCore(getCellAsString(row, 12, formulaEvaluator));
+                    odp.getOtb().setKap(getCellAsString(row, 13, formulaEvaluator));
+
+                    odp.getOdc().setNama(getCellAsString(row, 14, formulaEvaluator));
+                    odp.getOdc().setPanel(getCellAsString(row, 15, formulaEvaluator));
+                    odp.getOdc().setPort(getCellAsString(row, 16, formulaEvaluator));
+                    odp.getOdc().setSpl(getCellAsString(row, 17, formulaEvaluator));
+                    odp.getOdc().setKap(getCellAsString(row, 18, formulaEvaluator));
+                    odp.getOdc().setKoordinat(getCellAsString(row, 19, formulaEvaluator));
 
                     dataODP.add(odp);
                 }
@@ -232,32 +243,43 @@ public class InputDataFragment extends Fragment {
                 int rowsCount = sheet.getPhysicalNumberOfRows();
                 FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
-                for (int r = 2; r < rowsCount; r++) {
+                for (int r = 3; r < rowsCount; r++) {
                     Row row = sheet.getRow(r);
                     ODP odp = new ODP();
                     odp.setNama(getCellAsString(row, 0, formulaEvaluator));
-                    odp.setPortolt(getCellAsString(row, 1, formulaEvaluator));
-                    odp.setPanel(getCellAsString(row, 13, formulaEvaluator));
-                    odp.setPort(getCellAsString(row, 14, formulaEvaluator));
-                    odp.setCore(getCellAsString(row, 15, formulaEvaluator));
-                    odp.setSpl(getCellAsString(row, 16, formulaEvaluator));
-                    odp.setKoordinat(getCellAsString(row, 17, formulaEvaluator));
-                    odp.setLastupdate(getCellAsString(row, 18, formulaEvaluator));
-                    odp.setAlamat(getCellAsString(row, 19, formulaEvaluator));
-                    odp.setKap(getCellAsString(row, 20, formulaEvaluator));
-                    odp.setTipe(getCellAsString(row, 21, formulaEvaluator));
+                    odp.setIpolt(getCellAsString(row, 1, formulaEvaluator));
+                    odp.setPortolt(getCellAsString(row, 2, formulaEvaluator));
+                    odp.setPanel(getCellAsString(row, 20, formulaEvaluator));
+                    odp.setPort(getCellAsString(row, 21, formulaEvaluator));
+                    odp.setCore(getCellAsString(row, 22, formulaEvaluator));
+                    odp.setSpl(getCellAsString(row, 23, formulaEvaluator));
+                    odp.setKoordinat(getCellAsString(row, 24, formulaEvaluator));
+                    odp.setLastupdate(getCellAsString(row, 25, formulaEvaluator));
+                    odp.setAlamat(getCellAsString(row, 26, formulaEvaluator));
+                    odp.setKap(getCellAsString(row, 27, formulaEvaluator));
+                    odp.setTipe(getCellAsString(row, 28, formulaEvaluator));
 
-                    odp.getOtb().setOdf(getCellAsString(row, 2, formulaEvaluator));
-                    odp.getOtb().setPanel(getCellAsString(row, 3, formulaEvaluator));
-                    odp.getOtb().setPort(getCellAsString(row, 4, formulaEvaluator));
-                    odp.getOtb().setCore(getCellAsString(row, 5, formulaEvaluator));
-                    odp.getOtb().setKap(getCellAsString(row, 6, formulaEvaluator));
+                    odp.getFtm().getEside().setPanel(getCellAsString(row, 3, formulaEvaluator));
+                    odp.getFtm().getEside().setPort(getCellAsString(row, 4, formulaEvaluator));
 
-                    odp.getOdc().setNama(getCellAsString(row, 7, formulaEvaluator));
-                    odp.getOdc().setPanel(getCellAsString(row, 8, formulaEvaluator));
-                    odp.getOdc().setPort(getCellAsString(row, 9, formulaEvaluator));
-                    odp.getOdc().setSpl(getCellAsString(row, 10, formulaEvaluator));
-                    odp.getOdc().setKap(getCellAsString(row, 11, formulaEvaluator));
+                    odp.getFtm().getOside().setPanel(getCellAsString(row, 5, formulaEvaluator));
+                    odp.getFtm().getOside().setPort(getCellAsString(row, 6, formulaEvaluator));
+
+                    odp.getFtm().getEtrans().setPanel(getCellAsString(row, 7, formulaEvaluator));
+                    odp.getFtm().getEtrans().setPort(getCellAsString(row, 8, formulaEvaluator));
+
+                    odp.getOtb().setOdf(getCellAsString(row, 9, formulaEvaluator));
+                    odp.getOtb().setPanel(getCellAsString(row, 10, formulaEvaluator));
+                    odp.getOtb().setPort(getCellAsString(row, 11, formulaEvaluator));
+                    odp.getOtb().setCore(getCellAsString(row, 12, formulaEvaluator));
+                    odp.getOtb().setKap(getCellAsString(row, 13, formulaEvaluator));
+
+                    odp.getOdc().setNama(getCellAsString(row, 14, formulaEvaluator));
+                    odp.getOdc().setPanel(getCellAsString(row, 15, formulaEvaluator));
+                    odp.getOdc().setPort(getCellAsString(row, 16, formulaEvaluator));
+                    odp.getOdc().setSpl(getCellAsString(row, 17, formulaEvaluator));
+                    odp.getOdc().setKap(getCellAsString(row, 18, formulaEvaluator));
+                    odp.getOdc().setKoordinat(getCellAsString(row, 19, formulaEvaluator));
 
                     dataODP.add(odp);
                 }
@@ -288,13 +310,13 @@ public class InputDataFragment extends Fragment {
                     value = "" + cellValue.getStringValue();
                     break;
                 case Cell.CELL_TYPE_BLANK:
-                    value = "";
+                    value = "-";
                     break;
                 default:
                     Toast.makeText(InputDataFragment.this.getContext(), "Unknown Cell Type !", Toast.LENGTH_SHORT).show();
             }
         } catch (NullPointerException nullpointer) {
-            Toast.makeText(InputDataFragment.this.getContext(), "Null Pointer !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InputDataFragment.this.getContext(), "Ada kolom yang kosong !", Toast.LENGTH_SHORT).show();
         }
         return value;
     }

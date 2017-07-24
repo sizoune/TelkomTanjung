@@ -38,6 +38,21 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.txtTipeDetail)
     TextView tipeODP;
 
+    @BindView(R.id.txtPanelESIDE)
+    TextView paneleside;
+    @BindView(R.id.txtPortESIDE)
+    TextView porteside;
+
+    @BindView(R.id.txtPanelOSIDE)
+    TextView paneloside;
+    @BindView(R.id.txtPortOSIDE)
+    TextView portoside;
+
+    @BindView(R.id.txtPanelETRANS)
+    TextView paneletrans;
+    @BindView(R.id.txtPortETRANS)
+    TextView portetrans;
+
     @BindView(R.id.txtODFDetail)
     TextView odfOTB;
     @BindView(R.id.txtPanelOtbDetail)
@@ -57,8 +72,10 @@ public class DetailActivity extends AppCompatActivity {
     TextView splODC;
     @BindView(R.id.txtKapOdcDetail)
     TextView kapODC;
+    @BindView(R.id.txtKoordinatODC)
+    TextView koorODC;
 
-    String nama, koord;
+    String nama, koord, namaODC, koordODC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +93,8 @@ public class DetailActivity extends AppCompatActivity {
             ODP odp = bundle.getParcelable("data");
             nama = odp.getNama();
             koord = odp.getKoordinat();
+            namaODC = odp.getOdc().getNama();
+            koordODC = odp.getOdc().getKoordinat();
 
             namaODP.setText("Nama : " + odp.getNama());
             portOLT.setText("Port OLT : " + odp.getPortolt());
@@ -97,6 +116,16 @@ public class DetailActivity extends AppCompatActivity {
             portODC.setText("Port : " + odp.getOdc().getPort());
             splODC.setText("SPL : " + odp.getOdc().getSpl());
             kapODC.setText("KAP : " + odp.getOdc().getKap());
+            koorODC.setText("Koordinat : " + odp.getOdc().getKoordinat());
+
+            paneleside.setText("Panel : " + odp.getFtm().getEside().getPanel());
+            porteside.setText("Port : " + odp.getFtm().getEside().getPort());
+
+            paneloside.setText("Panel : " + odp.getFtm().getOside().getPanel());
+            portoside.setText("Port : " + odp.getFtm().getOside().getPort());
+
+            paneletrans.setText("Panel : " + odp.getFtm().getEtrans().getPanel());
+            portetrans.setText("Port : " + odp.getFtm().getEtrans().getPort());
         }
     }
 
@@ -108,6 +137,13 @@ public class DetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @OnClick(R.id.btnMapODC)
+    public void openMapODC() {
+        Intent intent = new Intent(getApplicationContext(), OnMapOpen.class);
+        intent.putExtra("nama", namaODC);
+        intent.putExtra("koord", koordODC);
+        startActivity(intent);
+    }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

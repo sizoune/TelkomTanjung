@@ -7,14 +7,16 @@ import android.os.Parcelable;
  * Created by mwi on 7/20/17.
  */
 
-public class ODP implements Parcelable{
-    private String nama, panel, port, core, spl, koordinat, lastupdate, alamat, kap, tipe, portolt;
+public class ODP implements Parcelable {
+    private String nama, panel, port, core, spl, koordinat, lastupdate, alamat, kap, tipe, portolt, ipolt;
     private ODC odc;
     private OTB otb;
+    private FTM ftm;
+
 
     public ODP(String nama, String panel, String port, String core, String spl, String koordinat,
-               String lastupdate, String alamat, String kap, String tipe, String portolt, ODC odc,
-               OTB otb) {
+               String lastupdate, String alamat, String kap, String tipe, String portolt,
+               String ipolt, ODC odc, OTB otb, FTM ftm) {
         this.nama = nama;
         this.panel = panel;
         this.port = port;
@@ -26,13 +28,32 @@ public class ODP implements Parcelable{
         this.kap = kap;
         this.tipe = tipe;
         this.portolt = portolt;
+        this.ipolt = ipolt;
         this.odc = odc;
         this.otb = otb;
+        this.ftm = ftm;
     }
 
     public ODP() {
         odc = new ODC();
         otb = new OTB();
+        ftm = new FTM();
+    }
+
+    public FTM getFtm() {
+        return ftm;
+    }
+
+    public void setFtm(FTM ftm) {
+        this.ftm = ftm;
+    }
+
+    public String getIpolt() {
+        return ipolt;
+    }
+
+    public void setIpolt(String ipolt) {
+        this.ipolt = ipolt;
     }
 
     protected ODP(Parcel in) {
@@ -47,8 +68,10 @@ public class ODP implements Parcelable{
         kap = in.readString();
         tipe = in.readString();
         portolt = in.readString();
+        ipolt = in.readString();
         odc = in.readParcelable(ODC.class.getClassLoader());
         otb = in.readParcelable(OTB.class.getClassLoader());
+        ftm = in.readParcelable(FTM.class.getClassLoader());
     }
 
     public static final Creator<ODP> CREATOR = new Creator<ODP>() {
@@ -185,7 +208,9 @@ public class ODP implements Parcelable{
         dest.writeString(kap);
         dest.writeString(tipe);
         dest.writeString(portolt);
+        dest.writeString(ipolt);
         dest.writeParcelable(odc, flags);
         dest.writeParcelable(otb, flags);
+        dest.writeParcelable(ftm, flags);
     }
 }
