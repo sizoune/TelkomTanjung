@@ -23,6 +23,8 @@ public class DetailActivity extends AppCompatActivity {
     TextView namaODP;
     @BindView(R.id.txtPortOLTDetail)
     TextView portOLT;
+    @BindView(R.id.txtIPOLTDetail)
+    TextView ipOLT;
     @BindView(R.id.txtPanelDetail)
     TextView panelODP;
     @BindView(R.id.txtPortDetail)
@@ -105,6 +107,7 @@ public class DetailActivity extends AppCompatActivity {
             koorODP.setText("Koordinat : " + odp.getKoordinat());
             kapODP.setText("KAP : " + odp.getKap());
             tipeODP.setText("Tipe ODP : " + odp.getTipe());
+            ipOLT.setText("IP OLT :  " + odp.getIpolt());
 
             odfOTB.setText("ODF : " + odp.getOtb().getOdf());
             panelOTB.setText("Panel : " + odp.getOtb().getPanel());

@@ -63,6 +63,14 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/txtIPOLTDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IP OLT"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
                         android:id="@+id/txtPanelDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
