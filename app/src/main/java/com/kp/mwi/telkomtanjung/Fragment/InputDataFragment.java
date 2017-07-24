@@ -339,7 +339,8 @@ public class InputDataFragment extends Fragment {
                     Toast.makeText(InputDataFragment.this.getContext(), "Unknown Cell Type !", Toast.LENGTH_SHORT).show();
             }
         } catch (NullPointerException nullpointer) {
-            Toast.makeText(InputDataFragment.this.getContext(), "Ada kolom yang kosong !", Toast.LENGTH_SHORT).show();
+            Log.e("null pointer", "Ada kolom yang kosong !");
+//            Toast.makeText(InputDataFragment.this.getContext(), "Ada kolom yang kosong !", Toast.LENGTH_SHORT).show();
         }
         return value;
     }
