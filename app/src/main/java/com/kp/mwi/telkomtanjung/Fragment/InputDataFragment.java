@@ -119,14 +119,15 @@ public class InputDataFragment extends Fragment {
     @OnClick(R.id.btnSimpan)
     public void simpan() {
         if (merlinsBeard.isConnected()) {
+            showDialog();
             if (ada) {
-                showDialog();
                 dataODP = new ArrayList<>();
                 readDataFromExcel();
                 if (!dataODP.isEmpty()) {
                     updateOldData();
                 }
             } else {
+                dismissDialog();
                 Toast.makeText(InputDataFragment.this.getContext(), "Silahkan pilih file terlebih dahulu !"
                         , Toast.LENGTH_SHORT).show();
             }
@@ -238,13 +239,16 @@ public class InputDataFragment extends Fragment {
                     if (paths.size() > 0) {
                         String ext = paths.get(0).substring(paths.get(0).lastIndexOf('.') + 1);
                         ekstensi = ext;
-                        if (ext.equals("xls") || ext.equals("xlsx")) {
+                        if (ext.equals("xlsx")) {
                             path = paths.get(0);
                             lokasi.setText(paths.get(0));
                             ada = true;
+                        } else if (ext.equals("xls")) {
+                            Toast.makeText(InputDataFragment.this.getContext(),
+                                    "Tolong save file anda dengan format excel 2007 - 2013 (.xlsx) !", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(InputDataFragment.this.getContext(),
-                                    "Format file harus berupa .xls atau .xlsx !", Toast.LENGTH_SHORT).show();
+                                    "Format file harus berupa .xlsx !", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -258,98 +262,50 @@ public class InputDataFragment extends Fragment {
 
         try {
             InputStream inputStream = new FileInputStream(data);
-            if (ekstensi.equals("xlsx")) {
-                XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-                XSSFSheet sheet = workbook.getSheet("ODC FB");
-                int rowsCount = sheet.getPhysicalNumberOfRows();
-                FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet sheet = workbook.getSheet("ODC FB");
+            int rowsCount = sheet.getPhysicalNumberOfRows();
+            FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
 
-                for (int r = 3; r < rowsCount; r++) {
-                    Row row = sheet.getRow(r);
-                    ODP odp = new ODP();
-                    odp.setNama(getCellAsString(row, 0, formulaEvaluator));
-                    odp.setIpolt(getCellAsString(row, 1, formulaEvaluator));
-                    odp.setPortolt(getCellAsString(row, 2, formulaEvaluator));
-                    odp.setPanel(getCellAsString(row, 20, formulaEvaluator));
-                    odp.setPort(getCellAsString(row, 21, formulaEvaluator));
-                    odp.setCore(getCellAsString(row, 22, formulaEvaluator));
-                    odp.setSpl(getCellAsString(row, 23, formulaEvaluator));
-                    odp.setKoordinat(getCellAsString(row, 24, formulaEvaluator));
-                    odp.setLastupdate(getCellAsString(row, 25, formulaEvaluator));
-                    odp.setAlamat(getCellAsString(row, 26, formulaEvaluator));
-                    odp.setKap(getCellAsString(row, 27, formulaEvaluator));
-                    odp.setTipe(getCellAsString(row, 28, formulaEvaluator));
+            for (int r = 3; r < rowsCount; r++) {
+                Row row = sheet.getRow(r);
+                ODP odp = new ODP();
+                odp.setNama(getCellAsString(row, 0, formulaEvaluator));
+                odp.setIpolt(getCellAsString(row, 1, formulaEvaluator));
+                odp.setPortolt(getCellAsString(row, 2, formulaEvaluator));
+                odp.setPanel(getCellAsString(row, 20, formulaEvaluator));
+                odp.setPort(getCellAsString(row, 21, formulaEvaluator));
+                odp.setCore(getCellAsString(row, 22, formulaEvaluator));
+                odp.setSpl(getCellAsString(row, 23, formulaEvaluator));
+                odp.setKoordinat(getCellAsString(row, 24, formulaEvaluator));
+                odp.setLastupdate(getCellAsString(row, 25, formulaEvaluator));
+                odp.setAlamat(getCellAsString(row, 26, formulaEvaluator));
+                odp.setKap(getCellAsString(row, 27, formulaEvaluator));
+                odp.setTipe(getCellAsString(row, 28, formulaEvaluator));
 
-                    odp.getFtm().getEside().setPanel(getCellAsString(row, 3, formulaEvaluator));
-                    odp.getFtm().getEside().setPort(getCellAsString(row, 4, formulaEvaluator));
+                odp.getFtm().getEside().setPanel(getCellAsString(row, 3, formulaEvaluator));
+                odp.getFtm().getEside().setPort(getCellAsString(row, 4, formulaEvaluator));
 
-                    odp.getFtm().getOside().setPanel(getCellAsString(row, 5, formulaEvaluator));
-                    odp.getFtm().getOside().setPort(getCellAsString(row, 6, formulaEvaluator));
+                odp.getFtm().getOside().setPanel(getCellAsString(row, 5, formulaEvaluator));
+                odp.getFtm().getOside().setPort(getCellAsString(row, 6, formulaEvaluator));
 
-                    odp.getFtm().getEtrans().setPanel(getCellAsString(row, 7, formulaEvaluator));
-                    odp.getFtm().getEtrans().setPort(getCellAsString(row, 8, formulaEvaluator));
+                odp.getFtm().getEtrans().setPanel(getCellAsString(row, 7, formulaEvaluator));
+                odp.getFtm().getEtrans().setPort(getCellAsString(row, 8, formulaEvaluator));
 
-                    odp.getOtb().setOdf(getCellAsString(row, 9, formulaEvaluator));
-                    odp.getOtb().setPanel(getCellAsString(row, 10, formulaEvaluator));
-                    odp.getOtb().setPort(getCellAsString(row, 11, formulaEvaluator));
-                    odp.getOtb().setCore(getCellAsString(row, 12, formulaEvaluator));
-                    odp.getOtb().setKap(getCellAsString(row, 13, formulaEvaluator));
+                odp.getOtb().setOdf(getCellAsString(row, 9, formulaEvaluator));
+                odp.getOtb().setPanel(getCellAsString(row, 10, formulaEvaluator));
+                odp.getOtb().setPort(getCellAsString(row, 11, formulaEvaluator));
+                odp.getOtb().setCore(getCellAsString(row, 12, formulaEvaluator));
+                odp.getOtb().setKap(getCellAsString(row, 13, formulaEvaluator));
 
-                    odp.getOdc().setNama(getCellAsString(row, 14, formulaEvaluator));
-                    odp.getOdc().setPanel(getCellAsString(row, 15, formulaEvaluator));
-                    odp.getOdc().setPort(getCellAsString(row, 16, formulaEvaluator));
-                    odp.getOdc().setSpl(getCellAsString(row, 17, formulaEvaluator));
-                    odp.getOdc().setKap(getCellAsString(row, 18, formulaEvaluator));
-                    odp.getOdc().setKoordinat(getCellAsString(row, 19, formulaEvaluator));
+                odp.getOdc().setNama(getCellAsString(row, 14, formulaEvaluator));
+                odp.getOdc().setPanel(getCellAsString(row, 15, formulaEvaluator));
+                odp.getOdc().setPort(getCellAsString(row, 16, formulaEvaluator));
+                odp.getOdc().setSpl(getCellAsString(row, 17, formulaEvaluator));
+                odp.getOdc().setKap(getCellAsString(row, 18, formulaEvaluator));
+                odp.getOdc().setKoordinat(getCellAsString(row, 19, formulaEvaluator));
 
-                    dataODP.add(odp);
-                }
-            } else if (ekstensi.equals("xls")) {
-                HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
-                HSSFSheet sheet = workbook.getSheet("ODC FB");
-                int rowsCount = sheet.getPhysicalNumberOfRows();
-                FormulaEvaluator formulaEvaluator = workbook.getCreationHelper().createFormulaEvaluator();
-
-                for (int r = 3; r < rowsCount; r++) {
-                    Row row = sheet.getRow(r);
-                    ODP odp = new ODP();
-                    odp.setNama(getCellAsString(row, 0, formulaEvaluator));
-                    odp.setIpolt(getCellAsString(row, 1, formulaEvaluator));
-                    odp.setPortolt(getCellAsString(row, 2, formulaEvaluator));
-                    odp.setPanel(getCellAsString(row, 20, formulaEvaluator));
-                    odp.setPort(getCellAsString(row, 21, formulaEvaluator));
-                    odp.setCore(getCellAsString(row, 22, formulaEvaluator));
-                    odp.setSpl(getCellAsString(row, 23, formulaEvaluator));
-                    odp.setKoordinat(getCellAsString(row, 24, formulaEvaluator));
-                    odp.setLastupdate(getCellAsString(row, 25, formulaEvaluator));
-                    odp.setAlamat(getCellAsString(row, 26, formulaEvaluator));
-                    odp.setKap(getCellAsString(row, 27, formulaEvaluator));
-                    odp.setTipe(getCellAsString(row, 28, formulaEvaluator));
-
-                    odp.getFtm().getEside().setPanel(getCellAsString(row, 3, formulaEvaluator));
-                    odp.getFtm().getEside().setPort(getCellAsString(row, 4, formulaEvaluator));
-
-                    odp.getFtm().getOside().setPanel(getCellAsString(row, 5, formulaEvaluator));
-                    odp.getFtm().getOside().setPort(getCellAsString(row, 6, formulaEvaluator));
-
-                    odp.getFtm().getEtrans().setPanel(getCellAsString(row, 7, formulaEvaluator));
-                    odp.getFtm().getEtrans().setPort(getCellAsString(row, 8, formulaEvaluator));
-
-                    odp.getOtb().setOdf(getCellAsString(row, 9, formulaEvaluator));
-                    odp.getOtb().setPanel(getCellAsString(row, 10, formulaEvaluator));
-                    odp.getOtb().setPort(getCellAsString(row, 11, formulaEvaluator));
-                    odp.getOtb().setCore(getCellAsString(row, 12, formulaEvaluator));
-                    odp.getOtb().setKap(getCellAsString(row, 13, formulaEvaluator));
-
-                    odp.getOdc().setNama(getCellAsString(row, 14, formulaEvaluator));
-                    odp.getOdc().setPanel(getCellAsString(row, 15, formulaEvaluator));
-                    odp.getOdc().setPort(getCellAsString(row, 16, formulaEvaluator));
-                    odp.getOdc().setSpl(getCellAsString(row, 17, formulaEvaluator));
-                    odp.getOdc().setKap(getCellAsString(row, 18, formulaEvaluator));
-                    odp.getOdc().setKoordinat(getCellAsString(row, 19, formulaEvaluator));
-
-                    dataODP.add(odp);
-                }
+                dataODP.add(odp);
             }
         } catch (FileNotFoundException notfound) {
             dismissDialog();
