@@ -16,7 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -25,6 +28,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.kp.mwi.telkomtanjung.Model.ODP;
 import com.kp.mwi.telkomtanjung.R;
+import com.novoda.merlin.Merlin;
+import com.novoda.merlin.MerlinsBeard;
 
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -65,11 +70,19 @@ public class InputDataFragment extends Fragment {
     FirebaseDatabase database;
 
     private ArrayList<ODP> dataODP;
+    private ArrayList<String> dataODPFromserver = new ArrayList<>();
 
     @BindView(R.id.path)
     TextView lokasi;
 
+    ArrayList<Integer> newData = new ArrayList<>();
+
     boolean ijin = false;
+    boolean noDatainserver = false;
+    boolean alreadyloaddata = false;
+
+    Merlin merlin;
+    MerlinsBeard merlinsBeard;
 
     public InputDataFragment() {
         // Required empty public constructor
@@ -85,6 +98,8 @@ public class InputDataFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         path = null;
         ada = false;
+        merlin = new Merlin.Builder().withConnectableCallbacks().build(getContext());
+        merlinsBeard = MerlinsBeard.from(getContext());
         return v;
     }
 
@@ -103,25 +118,77 @@ public class InputDataFragment extends Fragment {
 
     @OnClick(R.id.btnSimpan)
     public void simpan() {
-        if (ada) {
-            dataODP = new ArrayList<>();
-            showDialog();
-            readDataFromExcel();
-            if (!dataODP.isEmpty()) {
-                for (ODP data : dataODP) {
-                    database.getReference().push().setValue(data);
+        if (merlinsBeard.isConnected()) {
+            if (ada) {
+                showDialog();
+                dataODP = new ArrayList<>();
+                readDataFromExcel();
+                if (!dataODP.isEmpty()) {
+                    updateOldData();
                 }
-                Toast.makeText(InputDataFragment.this.getContext(),
-                        "Data berhasil di upload ke server !", Toast.LENGTH_SHORT).show();
-                path = null;
-                ada = false;
-                lokasi.setText(R.string.pathfile);
+            } else {
+                Toast.makeText(InputDataFragment.this.getContext(), "Silahkan pilih file terlebih dahulu !"
+                        , Toast.LENGTH_SHORT).show();
             }
-            dismissDialog();
         } else {
-            Toast.makeText(InputDataFragment.this.getContext(), "Silahkan pilih file terlebih dahulu !"
-                    , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Maaf tidak dapat mengupload data ke server !\n" +
+                    "karena anda tidak terhubung dengan internet !", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void cekNewData() {
+        boolean ada = false;
+        for (int i = 0; i < dataODP.size(); i++) {
+            for (String nama : dataODPFromserver) {
+                if (nama.equals(dataODP.get(i).getNama())) {
+                    ada = true;
+                }
+            }
+            if (!ada) {
+                newData.add(i);
+            }
+            ada = false;
+        }
+    }
+
+    private void updateOldData() {
+        database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        ODP odpfromserver = dataSnapshot1.getValue(ODP.class);
+                        dataODPFromserver.add(odpfromserver.getNama());
+                        for (ODP odp1 : dataODP) {
+                            if (odp1.getNama().equals(odpfromserver.getNama())) {
+                                database.getReference(dataSnapshot1.getKey()).setValue(odp1);
+                            }
+                        }
+                    }
+                    cekNewData();
+                    if (newData.size() > 0) {
+                        for (int i : newData) {
+                            database.getReference().push().setValue(dataODP.get(i));
+                        }
+                    }
+                    Toast.makeText(InputDataFragment.this.getContext(),
+                            "Data berhasil di upload ke server !", Toast.LENGTH_SHORT).show();
+                    path = null;
+                    ada = false;
+                    lokasi.setText(R.string.pathfile);
+                } else {
+                    for (ODP data : dataODP) {
+                        database.getReference().push().setValue(data);
+                    }
+                }
+                dismissDialog();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), "database error !", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showFileChooser() {
