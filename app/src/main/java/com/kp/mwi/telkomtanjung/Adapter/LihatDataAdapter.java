@@ -88,4 +88,9 @@ public class LihatDataAdapter extends RecyclerView.Adapter<LihatDataAdapter.Liha
         filterListODP.add(odp);
         notifyDataSetChanged();
     }
+
+    public void clearList() {
+        filterListODP.clear();
+        notifyDataSetChanged();
+    }
 }

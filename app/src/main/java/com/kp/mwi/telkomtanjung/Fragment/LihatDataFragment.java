@@ -1,6 +1,7 @@
 package com.kp.mwi.telkomtanjung.Fragment;
 
 
+import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ import com.novoda.merlin.Merlin;
 import com.novoda.merlin.MerlinsBeard;
 import com.novoda.merlin.registerable.connection.Connectable;
 import com.novoda.merlin.registerable.disconnection.Disconnectable;
+import com.pixplicity.easyprefs.library.Prefs;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +70,12 @@ public class LihatDataFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_lihat_data, container, false);
         ButterKnife.bind(this, rootView);
+        new Prefs.Builder()
+                .setContext(getContext())
+                .setMode(ContextWrapper.MODE_PRIVATE)
+                .setPrefsName(getActivity().getPackageName())
+                .setUseDefaultSharedPreference(true)
+                .build();
         return rootView;
     }
 
@@ -168,9 +177,10 @@ public class LihatDataFragment extends Fragment {
 
 
     private void getData() {
-        database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ODPAdapter.clearList();
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         ODP odp = dataSnapshot1.getValue(ODP.class);
@@ -188,6 +198,36 @@ public class LihatDataFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("resume", "onresume state");
+        String data = Prefs.getString("NewData", "no");
+        if (data.equals("yes")) {
+            showDialog();
+            database.getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ODPAdapter.clearList();
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            ODP odp = dataSnapshot1.getValue(ODP.class);
+                            ODPAdapter.addData(odp);
+                        }
+                    }
+                    Prefs.putString("NewData", "");
+                    dismissDialog();
+                    muatulang.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
     private void showDialog() {

@@ -28,6 +28,7 @@
     <string name="proses">Mohon Tunggu...</string>
     <string name="keluar">Keluar</string>
     <string name="konfirmasi">Apakah anda yakin ingin keluar dari aplikasi ?</string>
+    <string name="konfirmasiHapus">Apakah anda yakin ingin menghapus data ini ?</string>
     <string name="agree">Ya</string>
     <string name="disagree">Batal</string>
     <string name="title_activity_detail">Detail</string>

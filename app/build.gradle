@@ -49,6 +49,7 @@ dependencies {
     compile 'com.vstechlab.easyfonts:easyfonts:1.0.0'
     compile 'com.karumi:dexter:4.1.0'
     compile 'com.novoda:merlin:1.0.0'
+    compile 'com.pixplicity.easyprefs:library:1.9.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
 }
